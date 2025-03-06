@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using WebShopper.Models;
 
 namespace WebShopper.Controllers
@@ -213,9 +214,19 @@ namespace WebShopper.Controllers
 
 			return View();
 		}
+		public IActionResult ForgotPassword()
+		{
+			if (signInManager.IsSignedIn(User))
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			return View();
+		}
 
 
-		public IActionResult AccessDenied()
+
+        public IActionResult AccessDenied()
 		{
 			return RedirectToAction("Index", "Home");
 		}

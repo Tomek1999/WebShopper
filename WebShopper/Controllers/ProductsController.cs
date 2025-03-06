@@ -7,8 +7,8 @@ using WebShopper.Services;
 
 namespace WebShopper.Controllers
 {
-    [Authorize(Roles ="admin")]
-    [Route("/Admin/[controller]/{action=Index}")]
+    [Authorize(Roles = "admin")]
+    [Route("/Admin/[controller]/{action=Index}/{id?}")]
 
     public class ProductsController : Controller
     {
