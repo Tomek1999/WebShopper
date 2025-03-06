@@ -17,7 +17,7 @@ namespace WebShopper.Controllers
             this.context = context;
             this.environment= environment;
         }
-        public IActionResult Index(int pageIndex, string? search) // search is null or not null
+        public IActionResult Index(int pageIndex, string? search, string? column, string? orderBy) // search is null or not null
         {
             IQueryable<Product> query = context.Products;
 
@@ -27,7 +27,86 @@ namespace WebShopper.Controllers
                 query=query.Where(p => p.Name.Contains(search) || p.Brand.Contains(search));
             }
 			query = query.OrderByDescending(p => p.Id);
+			// sort functionality
+			string[] validColumns = { "Id", "Name", "Brand", "Category", "Price", "CreatedAt" };
+			string[] validOrderBy = { "desc", "asc" };
 
+			if (!validColumns.Contains(column))
+			{
+				column = "Id";
+			}
+
+			if (!validOrderBy.Contains(orderBy))
+			{
+				orderBy = "desc";
+			}
+
+			if (column == "Name")
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.Name);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.Name);
+				}
+			}
+			else if (column == "Brand")
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.Brand);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.Brand);
+				}
+			}
+			else if (column == "Category")
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.Category);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.Category);
+				}
+			}
+			else if (column == "Price")
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.Price);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.Price);
+				}
+			}
+			else if (column == "CreatedAt")
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.CreatedAt);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.CreatedAt);
+				}
+			}
+			else
+			{
+				if (orderBy == "asc")
+				{
+					query = query.OrderBy(p => p.Id);
+				}
+				else
+				{
+					query = query.OrderByDescending(p => p.Id);
+				}
+			}
 			//pagination
 			if (pageIndex < 1)
             {
@@ -45,8 +124,8 @@ namespace WebShopper.Controllers
 
             ViewData["Search"] = search ?? "";
 
-            //ViewData["Column"] = column;
-            //ViewData["OrderBy"] = orderBy;
+            ViewData["Column"] = column;
+            ViewData["OrderBy"] = orderBy;
 
             return View(products);
         }

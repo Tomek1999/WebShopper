@@ -22,16 +22,29 @@
 	</div>
 </div>
 
+<script>
+    function sortTable(column) {
+        let orderBy = "desc"
+        let currentColumn = "@column";
+        let currentOrder = "@orderBy";
+        if (column === currentColumn) {
+            if (currentOrder == "asc") orderBy = "desc";
+            else orderBy = "asc";
+        }
+        window.location.href = "?search=@(search)&column=" + column + "&orderBy=" + orderBy
+    }
+</script>
+
 <table class="table">
 	<thead>
 		<tr>
-			<th>ID</th>
-			<th>Nazwa</th>
-			<th>Marka</th>
-			<th>Kategoria</th>
-			<th>Cena</th>
+			<th style="cursor: pointer;" onclick="sortTable('Id')">ID</th>
+			<th style="cursor: pointer;" onclick="sortTable('Name')">Nazwa</th>
+			<th style="cursor: pointer;" onclick="sortTable('Brand')">Marka</th>
+			<th style="cursor: pointer;" onclick="sortTable('Category')">Kategoria</th>
+			<th style="cursor: pointer;" onclick="sortTable('Price')">Cena</th>
 			<th>Obraz podglądowy</th>
-			<th>Data utworzenia</th>
+			<th style="cursor: pointer;" onclick="sortTable('CreatedAt')">Data utworzenia</th>
 			<th>Akcja </th>
 		</tr>
 	</thead>
