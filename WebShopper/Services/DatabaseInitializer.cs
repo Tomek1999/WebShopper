@@ -5,13 +5,12 @@ namespace WebShopper.Services
 {
     public class DatabaseInitializer
     {
-        public static async Task SeedDataAsync(UserManager<ApplicationUser>? userManager,
-            RoleManager<IdentityRole>? roleManager)
+        public static async Task SeedDataAsync(UserManager<ApplicationUser>? userManager, RoleManager<IdentityRole>? roleManager)
         {
             if (userManager == null || roleManager == null)
             {
                 Console.WriteLine("Brak danych");
-                return;
+                //return;
             }
 
             // check if we have the admin role or not
@@ -46,7 +45,7 @@ namespace WebShopper.Services
             {
                 // Admin user already exists => exit
                 Console.WriteLine("Użytkownik admin już istnieje => wyjście");
-                return;
+                //return;
             }
 
 
