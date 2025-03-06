@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using WebShopper.Models;
@@ -6,6 +7,7 @@ using WebShopper.Services;
 
 namespace WebShopper.Controllers
 {
+    [Authorize(Roles ="admin")]
     [Route("/Admin/[controller]/{action=Index}")]
 
     public class ProductsController : Controller
