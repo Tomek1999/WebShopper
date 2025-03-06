@@ -6,6 +6,8 @@ using WebShopper.Services;
 
 namespace WebShopper.Controllers
 {
+    [Route("/Admin/[controller]/{action=Index}")]
+
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext context;
