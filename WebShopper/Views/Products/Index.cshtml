@@ -1,5 +1,12 @@
 ﻿@model List<Product>
 @{
+	int pageIndex = (int)ViewData["PageIndex"]!; //object is not null
+	int totalPages = (int)ViewData["TotalPages"]!;
+
+	string search = (string)ViewData["Search"]!;
+
+	string column = (string)ViewData["Column"]!;
+	string orderBy = (string)ViewData["OrderBy"]!;
 }
 <h2 class="text-center mb-3">Lista Produktów</h2>
 
@@ -7,8 +14,11 @@
 	<div class="col">
 		<a class="btn btn-primary" asp-controller="Products" asp-action="Create">Nowy produkt</a>
 	</div>
-	<div class="col">
-
+	<div class="col"><!-- from bootstrap -->
+		<form class="d-flex" role="search">
+			<input class="form-control me-2" type="search" name="search" value="@search" placeholder="Szukaj produktu" aria-label="Search">
+			<button class="btn btn-outline-success" type="submit">Search</button>
+		</form>
 	</div>
 </div>
 
@@ -16,13 +26,13 @@
 	<thead>
 		<tr>
 			<th>ID</th>
-			<th>Name</th>
-			<th>Brand</th>
-			<th>Category</th>
-			<th>Price</th>
-			<th>Image</th>
-			<th>Created At</th>
-			<th>Action</th>
+			<th>Nazwa</th>
+			<th>Marka</th>
+			<th>Kategoria</th>
+			<th>Cena</th>
+			<th>Obraz podglądowy</th>
+			<th>Data utworzenia</th>
+			<th>Akcja </th>
 		</tr>
 	</thead>
 
@@ -48,3 +58,15 @@
 	</tbody>
 
 </table>
+
+<nav> <!-- Pagination from bootstrap -->
+    <ul class="pagination">
+        @for(int i = 1; i <= totalPages; i++)
+        {
+            string active = "";
+            if (i == pageIndex) active = "active";
+            <li class="page-item @active"><a class="page-link" asp-route-pageIndex="@i"
+                asp-route-search="@search" asp-route-column="@column" asp-route-orderBy="@orderBy">@i</a></li>
+        }
+    </ul>
+</nav>

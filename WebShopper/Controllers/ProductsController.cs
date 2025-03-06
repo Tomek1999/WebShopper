@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using WebShopper.Models;
 using WebShopper.Services;
@@ -9,15 +10,44 @@ namespace WebShopper.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IWebHostEnvironment environment;
+        private readonly int pageSize = 5;
 
         public ProductsController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             this.context = context;
             this.environment= environment;
         }
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex, string? search) // search is null or not null
         {
-            var products = context.Products.ToList();
+            IQueryable<Product> query = context.Products;
+
+            //search func.
+            if (search != null)
+            { 
+                query=query.Where(p => p.Name.Contains(search) || p.Brand.Contains(search));
+            }
+			query = query.OrderByDescending(p => p.Id);
+
+			//pagination
+			if (pageIndex < 1)
+            {
+                pageIndex = 1;
+            }
+
+            decimal count = query.Count();
+            int totalPages = (int)Math.Ceiling(count / pageSize);
+            query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+
+            var products = query.ToList();
+
+            ViewData["PageIndex"] = pageIndex;
+            ViewData["TotalPages"] = totalPages;
+
+            ViewData["Search"] = search ?? "";
+
+            //ViewData["Column"] = column;
+            //ViewData["OrderBy"] = orderBy;
+
             return View(products);
         }
 
